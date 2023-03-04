@@ -1,13 +1,14 @@
 CXX=g++
 objs=main.o
 dobjs=main.do
-tests=Tests/Test.do
-FLAGS=-std=c++23
+tests=Tests/Test.to
+FLAGS=-std=c++20
 BFLAGS=-Ofast
 CFLAGS=-Ofast
 CDFLAGS=-g -Wall
+TDFLAGS=-g -Wall
 DFLAGS=-g -Wall
-TFLAGS=-g
+TFLAGS=-g -Wall
 LIBS=-lm
 OUT=main.out
 TestName=test.test
@@ -47,6 +48,12 @@ build_debug: $(dobjs)
 	mkdir -p build/obj
 	mkdir -p build/obj/Tests
 	$(CXX) $(FLAGS) $(CDFLAGS) -c $*.cpp -o build/obj/$*.do
+
+%.to: %.cpp 
+	mkdir -p build
+	mkdir -p build/obj
+	mkdir -p build/obj/Tests
+	$(CXX) $(FLAGS) $(TDFLAGS) -c $*.cpp -o build/obj/$*.to
 
 clean:
 	rm -rf build
