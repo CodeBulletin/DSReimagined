@@ -23,7 +23,7 @@ private:
 
     void _merge(T *arr, size_t l, size_t m, size_t e, std::function<bool(T, T)> cmp) {
         size_t l2 = m + 1;
-        if (arr[m] <= arr[l2]) return;
+        if (cmp(arr[m], arr[l2])) return;
         while (l <= m && l2 <= e) {
             if(cmp(arr[l], arr[l2])) {
                 l++;
@@ -51,15 +51,21 @@ protected:
     T* m_array;
 
 public:
+    virtual void push(T obj) = 0;
+    virtual void resize(size_t size) = 0;
+
+public:
     virtual T& get(size_t idx) {
         if (idx < 0 || idx >= this->m_size) throw std::out_of_range("Index out of range");
         return m_array[idx];
     }
+
     virtual bool set(size_t idx, T val) {
         if (idx < 0 || idx >= this->m_size) throw std::out_of_range("Index out of range");
         m_array[idx] = val;
         return true;
     }
+
     virtual void sort(size_t run = 32, std::function<bool(T, T)> cmp = accending) {
         for(size_t i = 0; i < this->m_size; i+=run) {
             _insertionSort(this->m_array, i, std::min(i + run - 1, this->m_size - 1), cmp);
@@ -73,6 +79,7 @@ public:
             }
         }
     }
+
     virtual std::pair<T, size_t> max() {
         T max = m_array[0];
         size_t idx = 0;
@@ -84,6 +91,7 @@ public:
         }
         return {max, idx};
     }
+
     virtual std::pair<T, size_t> min() {
         T min = m_array[0];
         size_t idx = 0;
@@ -95,6 +103,7 @@ public:
         }
         return {min, idx};
     }
+
     size_t search(T obj) {
         for(size_t i = 0; i < this->m_size; i++) {
             if (obj == this->m_array[i]) return i;
@@ -103,7 +112,7 @@ public:
     }
 
     size_t binarySearch(T obj, std::function<bool(T, T)> cmp = accending) {
-        for(int low = 0, high = this->m_size; low < high;) {
+        for(int low = 0, high = this->m_size; low <= high;) {
             int mid = (low + high)/2;
             if (obj == this->m_array[mid]) return mid;
             else if (!cmp(obj, this->m_array[mid])) low = mid + 1;
@@ -115,6 +124,16 @@ public:
     T& operator [](size_t idx) {
         if (idx < 0 || idx >= this->m_size) throw std::out_of_range("Index out of range");
         return this->m_array[idx];
+    }
+
+    T pop() {
+        if (this->m_size == 0) throw std::out_of_range("Array is empty");
+        return this->m_array[this->m_size--];
+    }
+
+    T& top() {
+        if (this->m_size == 0) throw std::out_of_range("Array is empty");
+        return this->m_array[this->m_size - 1];
     }
 };
 

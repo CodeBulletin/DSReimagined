@@ -1,10 +1,12 @@
 #include <iostream>
 #include "DS/Arrays/StaticArray.h"
+#include "DS/Arrays/DynamicArray.h"
 
 int main() {
-    StaticArray<int, 100> array;
-    for(int i = 0; i < array.getSize(); i++) {
-        array.set(i, 96 - i);
+    DynamicArray<int> a;
+    Array<int>& array = a;
+    for(int i = 0; i < 100; i++) {
+        array.push(i);
     }
     auto cmp = [](const int& a, const int& b) -> bool {
         return a >= b;
