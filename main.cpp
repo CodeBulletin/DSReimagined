@@ -1,24 +1,31 @@
 #include <iostream>
-#include "DS/Arrays/StaticArray.h"
-#include "DS/Arrays/DynamicArray.h"
+#include "DS/Matrix/DenseMatrix.h"
+#include "DS/Matrix/SparseMatrix/SparseMatrixCOO.h"
+
+int sum(int x, int y) {
+    return x + y;
+}
 
 int main() {
-    DynamicArray<int> a;
-    Array<int>& array = a;
-    for(int i = 0; i < 100; i++) {
-        array.push(i);
+    DenseMatrix<int> matrix1(5, 5);
+    for(int i = 0; i < 4; i++) {
+        for(int j = 0; j < 5; j++) {
+            matrix1(i, j) = rand() % 6 < 4 ? 0 : i * 5 + j;
+        }
     }
-    auto cmp = [](const int& a, const int& b) -> bool {
-        return a >= b;
-    };
-    array.sort(32, cmp);
-
-    for(int i = 0; i < array.getSize(); i++) {
-        std::cout << array.get(i) << " ";
+    for(int i = 0; i < 4; i++) {
+        for(int j = 0; j < 5; j++) {
+            std::cout << matrix1(i, j) << "\t";
+        }
+        std::cout << std::endl;
     }
-    std::cout << "\nMin: " << array.min().first;
-    std::cout << "\nMax: " << array.max().first;
-    std::cout << "\nIndex of 50: " << array.search(50) << " | value: " << array[array.search(50)];
-    std::cout << "\nIndex of 50: " << array.binarySearch(50, cmp) << " | value: " << array[array.binarySearch(50, cmp)] << std::endl;
-    return 0;
+    
+    SparseMatrixCOO<int> matrix(matrix1);
+    matrix.transpose();
+    for(int i = 0; i < 5; i++) {
+        for(int j = 0; j < 4; j++) {
+            std::cout << matrix(i, j) << "\t";
+        }
+        std::cout << std::endl;
+    }
 }

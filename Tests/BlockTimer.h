@@ -1,5 +1,5 @@
-#ifndef _T_BLOCKTIMER_H_;
-#define _T_BLOCKTIMER_H_;
+#ifndef _T_BLOCKTIMER_H_
+#define _T_BLOCKTIMER_H_
 
 #include <iostream>
 #include <chrono>
